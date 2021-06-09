@@ -8,6 +8,8 @@ use App\transection;
 
 use App\User;
 
+use App\Salary;
+
 use App\Expense;
 
 use App\Gain;
@@ -41,6 +43,7 @@ class transectionController extends Controller
                 'user_id' => Auth::user()->id,
                 'amount' => $request->amount,
                 'type' => 1,
+                'category' => "Gain"
             ]);
 
             $addgain = Gain::create([
@@ -129,6 +132,7 @@ class transectionController extends Controller
                 'user_id' => Auth::user()->id,
                 'amount' => $request->amount,
                 'type' => 0,
+                'category' => "Office Expense"
             ]);
             $expense = Expense::create([
                 'user_id' => Auth::user()->id,
@@ -177,6 +181,7 @@ class transectionController extends Controller
                 'user_id' => Auth::user()->id,
                 'amount' => $request->amount,
                 'type' => 0,
+                'category' => 'Food Expense'
             ]);
             $expense = Expense::create([
                 'user_id' => Auth::user()->id,
@@ -270,6 +275,7 @@ class transectionController extends Controller
                 'user_id' => Auth::user()->id,
                 'amount' => $request->amount,
                 'type' => 0,
+                'category' => 'Office Expense',
             ]);
             $expense = Expense::create([
                 'user_id' => Auth::user()->id,
@@ -318,6 +324,7 @@ class transectionController extends Controller
                 'user_id' => Auth::user()->id,
                 'amount' => $request->amount,
                 'type' => 0,
+                'category' => 'Food Expense',
             ]);
             $expense = Expense::create([
                 'user_id' => Auth::user()->id,
@@ -337,6 +344,24 @@ class transectionController extends Controller
 
             ]);
             return redirect()->back()->with(session()->flash('alert-success', 'Expense registered to the system'));
+        }
+    }
+    /**
+     *GET: Shows All the transaction record with details
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return view food expense && @return redirect with flash message
+     */
+    public function record(Request $request)
+    {
+        if ($request->isMethod("GET")) {
+
+            $transaction_Record = transection::join("users", "users.id", "=", "user_ID")
+                ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+            return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record]);
+        } else {
+            return redirect()->back();
         }
     }
 }

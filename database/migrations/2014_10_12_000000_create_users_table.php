@@ -18,10 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('image_path')->nullable();
-            $table->string('verification_code');
             $table->integer('stage');
             $table->string('role');
-            $table->string('is_verified');
             $table->string('designation');
             $table->string('department');
             $table->string('number')->nullable();

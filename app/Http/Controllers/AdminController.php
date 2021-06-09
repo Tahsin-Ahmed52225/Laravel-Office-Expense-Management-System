@@ -67,11 +67,9 @@ class AdminController extends Controller
                 $user = User::create([
                     'name' => $request->m_name,
                     'email' => $request->m_email,
-                    'image_path' => 'None',
-                    'verification_code' => 'ItsNotNeed',
+                    'image_path' => null,
                     'stage' => $request->m_stage,
                     'role' => 'user',
-                    'is_verified' => '0',
                     'designation' => $request->m_positon,
                     'department' => $request->m_department,
                     'number' => $request->m_num,

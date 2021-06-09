@@ -48,6 +48,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/deletefoodexpenseinfo/{id}', 'transectionController@deletefoodexpenseinfo')->name('deletefoodexpenseinfo');
     #Food expense routes
     Route::match(['get', 'post'], '/foodexpense', 'transectionController@foodexpense')->name('foodexpense');
+    #Transaction Record Route
+    Route::match(['get', 'post'], '/transectionRecord', 'transectionController@record')->name('record');
 
     //Profile
     Route::get('/profile', 'AdminController@profile')->name('profile');

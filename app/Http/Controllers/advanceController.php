@@ -8,8 +8,6 @@ use App\transection;
 
 use App\User;
 
-use App\Expense;
-
 use App\advance;
 
 use App\notification;
@@ -22,9 +20,8 @@ class advanceController extends Controller
     {
         if ($request->isMethod("GET")) {
             // $myexpense = Expense::where("user_id", "=", Auth::user()->id)->get();
-            $allexpense = Expense::where("type", "=", "food")
-                ->join("users", "users.id", "=", "expense.user_ID")
-                ->orderBy("expense.created_at", "desc")->get(["users.name", "users.designation", "users.department", "expense.*"]);
+            $allexpense = advance::join("users", "users.id", "=", "advance.user_id")
+                ->orderBy("advance.created_at", "desc")->get(["users.name", "users.designation", "users.department", "advance.*"]);
             //dd($allexpense);
             $users = User::get(["users.name", "users.id"]);
             // dd($users);
@@ -34,6 +31,7 @@ class advanceController extends Controller
                 'user_id' => $request->remarks,
                 'amount' => $request->amount,
                 'type' => 0,
+                'category' => 'Advance out',
             ]);
             $advance = advance::create([
                 'user_ID' => $request->remarks,
@@ -59,6 +57,7 @@ class advanceController extends Controller
                 'user_id' => $request->remarks,
                 'amount' => $request->amount,
                 'type' => 1,
+                'category' => 'Advance in',
             ]);
             $advance = advance::create([
                 'user_ID' => $request->remarks,

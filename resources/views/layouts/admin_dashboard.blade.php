@@ -118,9 +118,9 @@
               </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php if(request()->route()->getName() == "admin.addamount") { echo "active";} ?>" href="{{ route("admin.addamount") }}">
+                <a class="nav-link <?php if(request()->route()->getName() == "admin.record") { echo "active";} ?>" href="{{ route("admin.record") }}">
                   <i class="ni ni-money-coins text-primary"></i>
-                  <span class="nav-link-text">Add Amount</span>
+                  <span class="nav-link-text">Transaction Record</span>
                 </a>
             </li>
 

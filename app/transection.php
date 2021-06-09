@@ -13,7 +13,7 @@ class transection extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'amount', 'type',
+        'user_id', 'amount', 'type', 'category'
     ];
 
     public function User()

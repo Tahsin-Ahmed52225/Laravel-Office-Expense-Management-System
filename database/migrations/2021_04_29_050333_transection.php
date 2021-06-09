@@ -18,6 +18,7 @@ class Transection extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('amount');
             $table->integer('type');
+            $table->string('category');
             $table->timestamps();
 
 

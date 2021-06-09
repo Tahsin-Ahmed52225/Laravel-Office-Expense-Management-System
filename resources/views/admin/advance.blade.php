@@ -8,7 +8,7 @@
 @endforeach
     <!-- Table -->
     <div class="row">
-      <div class="col-lg-8 offset-lg-2">
+      <div class="col-lg-8 offset-lg-2" style=" height: 80vh; overflow: auto;">
 
         <div class="card">
           <!-- Card header -->
@@ -80,8 +80,6 @@
                 <tr>
                   <th>Name</th>
                   <th>Position</th>
-                  <th>Expence Details</th>
-                  <th>Remarks</th>
                   <th>Date</th>
                   <th>Amount</th>
                   <th>Actions</th>
@@ -90,12 +88,10 @@
               <tbody>
                 @foreach($allexpense as $item)
                 <?php $count = 1; ?>
-                <tr>
+                <tr class="<?php if ($item->type == 0) echo "text-danger"; else echo "text-success"?>">
                   <td>{{ $item->name }}</td>
                   <td>{{ $item->designation }}</td>
-                  <td>{{ $item->expense_details }}</td>
-                  <td>{{ $item->remarks }}</td>
-                  <td>{{ $item->date }}</td>
+                  <td>{{ Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</td>
                   <td>{{ $item->amount }}</td>
                   <td>
                       <button class="btn btn-icon btn-primary" type="button" data-toggle="modal" data-target="#edit-member<?php echo $count;?>">

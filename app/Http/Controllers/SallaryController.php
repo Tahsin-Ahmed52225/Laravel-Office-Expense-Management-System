@@ -51,6 +51,7 @@ class SallaryController extends Controller
                     'user_id' => Auth::user()->id,
                     'amount' => $request->amount,
                     'type' => 0,
+                    'category' => 'Salary Expense',
                 ]);
                 $sallary = Salary::create([
                     'user_ID' => $id,
@@ -110,6 +111,7 @@ class SallaryController extends Controller
                                 'user_id' => Auth::user()->id,
                                 'amount' => $mem->salary - $sallary,
                                 'type' => 0,
+                                'category' => 'Salary Expense',
                             ]);
                             $sallary = Salary::create([
                                 'user_ID' => $mem->id,
