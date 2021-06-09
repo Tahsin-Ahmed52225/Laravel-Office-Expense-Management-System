@@ -22,23 +22,44 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::match(['get', 'post'], '/viewmember', 'AdminController@viewmember')->name('viewMember');
     Route::post('/updateinfo/{id}', 'AdminController@updateinfo')->name('updateinfo');
     Route::post('/changeStage', 'AdminController@changeStage')->name('changeStage');
+    Route::post('/deletemember/{id}', 'AdminController@deletemember')->name('deletemember');
+
 
     //Sallary Module
     Route::match(['get', 'post'], '/paysallary', 'SallaryController@paysallary')->name('paysallary');
     Route::post('/paysallaryIn/{id}', 'SallaryController@paysallaryIn')->name('paysallaryIn');
     Route::post('/payallsallary', 'SallaryController@payallsalary')->name('payallsallary');
-
     Route::get('/sallaryRecord', 'SallaryController@sallaryRecord')->name('sallaryRecord');
+    Route::post('/updateSallaryRecord/{id}', 'SallaryController@updateSallaryRecord')->name('updateSallaryRecord');
+    Route::post('/deleteSallaryRecord/{id}', 'SallaryController@deleteSallaryRecord')->name('deleteSallaryRecord');
 
+    //Advanced Module
+    Route::match(['get', 'post'], '/advance', 'advanceController@advance')->name('advance');
+    Route::post('/receive', 'advanceController@receive')->name('receive');
 
     //Transection Module
+    #add amount routes
     Route::match(['get', 'post'], '/addamount', 'transectionController@addamount')->name('addamount');
+    Route::post('/updategaininfo/{id}', 'transectionController@updategaininfo')->name('updategaininfo');
+    Route::post('/deletegaininfo/{id}', 'transectionController@deletegaininfo')->name('deletegaininfo');
+    #office expense routes
     Route::match(['get', 'post'], '/officeexpense', 'transectionController@officeexpense')->name('officeexpense');
+    Route::post('/updatefoodexpenseinfo/{id}', 'transectionController@updatefoodexpenseinfo')->name('updatefoodexpenseinfo');
+    Route::post('/deletefoodexpenseinfo/{id}', 'transectionController@deletefoodexpenseinfo')->name('deletefoodexpenseinfo');
+    #Food expense routes
     Route::match(['get', 'post'], '/foodexpense', 'transectionController@foodexpense')->name('foodexpense');
 
     //Profile
     Route::get('/profile', 'AdminController@profile')->name('profile');
     Route::match(['get', 'post'], '/editprofile', 'AdminController@editprofile')->name('editprofile');
+
+    //PDFgenerate
+    Route::POST('salary/pdfdownload/yearly/', 'PdfController@Salary_PDF_Yearly')->name('SalaryPDFrecord');
+    Route::POST('salary/pdfdownload/monthly/', 'PdfController@Salary_PDF_Monthly')->name('SalaryPDFrecordM');
+
+    //CSVgenerate
+    Route::POST('salary/csvdownload/yearly/', 'CsvController@Salary_CSV_Yearly')->name('SalaryCSVrecord');
+    Route::POST('salary/csvdownload/monthly/', 'CsvController@Salary_CSV_Monthly')->name('SalaryCSVrecordM');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function () {

@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
+
     /**
      *GET: Shows admin dashboard
      *
@@ -61,7 +61,7 @@ class AdminController extends Controller
             return view("admin.addmember");
         } else if ($request->isMethod("POST")) {
             $user = User::where("email", "=", $request->m_email);
-            if ($user) {
+            if ($user->count() != 0) {
                 return redirect()->back()->with(session()->flash('alert-warning', 'Email Already Used'));
             } else {
                 $user = User::create([
@@ -102,6 +102,23 @@ class AdminController extends Controller
         }
     }
     /**
+     * Delete member
+     *
+     * @param  \Illuminate\Http\Request  $request @param App\User $id
+     *
+     * @return redirect admin edit profile with flash message
+     */
+    public function deletemember($id, Request $request)
+    {
+        if ($request->isMethod("POST")) {
+            $user = User::find($id);
+            $user->delete();
+            return redirect()->back()->with(session()->flash('alert-success', 'Member Deleted'));
+        } else {
+            return redirect()->back();
+        }
+    }
+    /**
      * Admin updates all member data
      *
      * @param  \Illuminate\Http\Request  $request , $id( user )
@@ -110,6 +127,7 @@ class AdminController extends Controller
      */
     public function updateinfo($id, Request $request)
     {
+        // dd($request);
         if ($request != null) {
             if ($request->name != '') {
                 $user = User::where("id", "=", $id)->update(["name" => $request->name]);
@@ -135,11 +153,13 @@ class AdminController extends Controller
                 $user = User::where("id", "=", $id)->update(["password" => Hash::make($request->password)]);
                 //  return redirect()->back()->with(session()->flash('alert-success', 'Profile Name Updated'));
             }
+
             return redirect()->back()->with(session()->flash('alert-success', 'Profile Updated'));
         } else {
             return redirect()->back()->with(session()->flash('alert-warning', 'Something Went Wrong'));
         }
     }
+
     /**
      * Lock Unlocks member state | Updates user table
      *
@@ -212,6 +232,19 @@ class AdminController extends Controller
                 }
                 if ($request->number != '') {
                     $user = User::where("id", "=", $id)->update(["number" => $request->number]);
+                }
+                if ($request->hasFile('profile_image')) {
+                    $image = $request->file('profile_image');
+                    $name = time() . '.' . $image->getClientOriginalExtension();
+                    $path = '/images/';
+                    $destinationPath = public_path('images');
+                    $image->move($destinationPath, $name);
+
+                    $user_image = '';
+                    if (isset($name)) {
+                        $user_image = $path . $name;
+                    }
+                    User::where('id', '=', Auth::user()->id)->update(["image_path" => $user_image]);
                 }
                 return redirect()->back()->with(session()->flash('alert-success', 'Profile Updated'));
             }

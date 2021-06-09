@@ -63,7 +63,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return redirect user edit profile with flash message
+     * @return view user edit profile || @return redirect with flash message
      */
     public function editprofile(Request $request)
     {

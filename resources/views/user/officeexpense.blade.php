@@ -30,19 +30,19 @@
                   <form autocomplete="off" action="{{ route("user.officeexpense") }}" method="POST">
                   @csrf
                     <div class="row">
-                      <div class="col-md">
+                      <div class="col-md-12">
                         <div class="form-group">
                           <label class="form-control-label" for="exampleFormControlInput1">Expense Details</label>
-                          <input type="text" class="form-control" id="exampleFormControlInput1" name="expense_details" required >
+                          <textarea rows=3 type="text" class="form-control" id="exampleFormControlInput1" name="expense_details" required ></textarea>
                         </div>
                       </div>
                       <div class="col-md">
                         <div class="form-group">
-                          <label class="form-control-label" for="exampleFormControlSelect1">Remark</label>
-                          <select class="form-control" id="exampleFormControlSelect1" name="remarks">
-                            @foreach($users as $item)
-                               <option value={{ $item->name }} >{{ $item->name }}</option>
-                            @endforeach
+                          <label class="form-control-label" for="exampleFormControlSelect1" >Remark</label>
+                          <select class="form-control" id="exampleFormControlSelect1" name="remarks" disabled>
+
+                               <option>-----</option>
+
                           </select>
                         </div>
                       </div>

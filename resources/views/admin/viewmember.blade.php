@@ -6,7 +6,7 @@
         <div class="container-fluid">
           <!-- Table -->
           <div class="row">
-            <div class="col">
+            <div class="col" style=" height: 80vh; overflow: auto;">
                 @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                 @if(Session::has('alert-' . $msg))
                     <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
@@ -47,11 +47,9 @@
                         <td>
                           <div class="input-group">
                             <div class="input-group-prepend" id="button-addon3">
-                              <button class="btn btn-icon btn-primary" type="button" data-toggle="modal" data-target="#edit-member<?php echo $cout;?>">
-                                <span class="btn-inner--icon"><i class="fas fa-edit"></i></span>
-                              </button>
+
                                  @if($users->stage == 0)
-                                    <button id="lock1"class="btn btn-icon btn-danger" type="button" data-toggle="modal"  data-target="#enable-member<?php echo $cout;?>" onclick="sendclick(event)">
+                                    <button id="lock1"class="btn btn-icon btn-warning" type="button" data-toggle="modal"  data-target="#enable-member<?php echo $cout;?>" onclick="sendclick(event)">
                                         <span class="btn-inner--icon"><i id="lock1icon" class="fas fa-lock"></i></span>
                                     </button>
                                 @else
@@ -59,11 +57,17 @@
                                         <span class="btn-inner--icon"><i id="lock2icon" class="fas fa-unlock"></i></span>
                                     </button>
                                 @endif
+                                  <button class="btn btn-icon btn-primary" type="button" data-toggle="modal" data-target="#edit-member<?php echo $cout;?>">
+                                    <span class="btn-inner--icon"><i class="fas fa-edit"></i></span>
+                                  </button>
+                                  <button class="btn btn-icon btn-danger" type="button" data-toggle="modal" data-target="#delete-member<?php echo $cout;?>">
+                                    <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
+                                  </button>
 
                             </div>
                           </div>
 
-                          <!--Edit Membor Modal -->
+                          <!--Edit Member Modal -->
                           <div class="modal fade" id="edit-member<?php echo $cout;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
@@ -143,8 +147,8 @@
                     @if($users->stage == 1)
                          {{-- Disable Modal --}}
                           <div class="modal fade" id="disable-member<?php echo $cout;?>" tabindex="-1" role="dialog" aria-labelledby="delete-member" aria-hidden="true">
-                            <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
-                              <div class="modal-content bg-gradient-danger">
+                            <div class="modal-dialog modal-warning modal-dialog-centered modal-" role="document">
+                              <div class="modal-content bg-gradient-warning">
                                 <div class="modal-header">
                                   <h6 class="modal-title" id="modal-title-notification">Your attention is required</h6>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -193,6 +197,35 @@
                             </div>
                           </div>
                 @endif
+                {{-- Delete member modal --}}
+                <div class="modal fade" id="delete-member<?php echo $cout;?>" tabindex="-1" role="dialog" aria-labelledby="delete-member" aria-hidden="true">
+                    <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                      <div class="modal-content bg-gradient-danger">
+                        <div class="modal-header">
+                          <h6 class="modal-title" id="modal-title-notification">Your attention is required</h6>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="py-3 text-center">
+                            <i class="fa-3x fas fa-trash"></i>
+                            <h4 class="heading mt-4">You should read this!</h4>
+                            <p>Are You Sure To delete <b style="font-size:18px; font-weight:600;"> <u>{{ $users->name }}</u></b> account ? <br>This will delete all records and transectios of this member</p>
+                            <p> </p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <form action="{{ route("admin.deletemember", $users->id) }}" method="POST">
+                          @csrf
+                            <button type="submit" class="btn btn-white"  id="DeleteButton" >Ok, Delete</button>
+                          </form>
+
+                          <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                         </td>
                       </tr>
                       <script>
@@ -203,28 +236,30 @@
                             //alert(button);
                         }
                         function changeStage(data){
-                          var id = data
-                          $.ajax({
-                            headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
+                                        var id = data
+                                        $.ajax({
+                                            headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
 
-                    type: 'POST',
-                    url: '/admin/changeStage',
-                    data: {
-                      'id':id,
-                    },
-                    success: function () {
-                        location.reload(true);
-                    },
-                    error: function (data, textStatus, errorThrown) {
-                        console.log("Error:".errorThrown);
-                        console.log(data);
+                                    type: 'POST',
+                                    url: '/admin/changeStage',
+                                    data: {
+                                    'id':id,
+                                    },
+                                    success: function () {
+                                        location.reload(true);
+                                    },
+                                    error: function (data, textStatus, errorThrown) {
+                                        console.log("Error:".errorThrown);
+                                        console.log(data);
 
 
-                    },
-                })
+                                    },
+                                })
                           }
+
+
 
 
 

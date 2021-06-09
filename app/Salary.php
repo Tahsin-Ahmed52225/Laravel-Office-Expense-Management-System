@@ -15,4 +15,8 @@ class Salary extends Model
     protected $fillable = [
         'user_ID', 'transection_ID', 'amount',
     ];
+    public function transection()
+    {
+        $this->belongsTo(transection::class);
+    }
 }

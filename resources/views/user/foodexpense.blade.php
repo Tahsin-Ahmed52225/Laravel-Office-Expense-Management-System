@@ -30,19 +30,19 @@
                   <form action={{ route("user.foodexpense") }} method="POST" >
                   @csrf
                     <div class="row">
-                      <div class="col-md">
+                      <div class="col-md-12">
                         <div class="form-group">
-                          <label class="form-control-label" for="exampleFormControlInput1">Item Name</label>
-                          <input type="text" class="form-control" id="exampleFormControlInput1" name="expense_details" required>
+                          <label class="form-control-label" for="exampleFormControlInput1">Items</label>
+                          <textarea rows=3 type="text" class="form-control" id="exampleFormControlInput1" name="expense_details" required> </textarea>
                         </div>
                       </div>
                       <div class="col-md">
                         <div class="form-group">
                           <label class="form-control-label" for="exampleFormControlSelect1">Remark</label>
-                          <select class="form-control" id="exampleFormControlSelect1" name="remarks" required>
-                            @foreach($users as $item)
-                                  <option value={{ $item->name }} >{{ $item->name }}</option>
-                            @endforeach
+                          <select class="form-control" id="exampleFormControlSelect1" name="remarks" disabled>
+
+                                  <option>---</option>
+
                           </select>
                         </div>
                       </div>
@@ -74,7 +74,7 @@
 
         <div class="card">
           <div class="table-responsive py-4 ">
-            <h2 class="text-muted ml-4 mb-3">All Food Expense are Given Below: </h2>
+            <h2 class="text-muted ml-4 mb-3">User Food Expense: </h2>
             <table class="table table-flush  text-center" id="datatable-basic">
               <thead class="thead-light">
                 <tr>

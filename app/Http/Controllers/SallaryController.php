@@ -11,6 +11,7 @@ use App\Salary;
 use App\transection;
 
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Constraint\Count;
 
 /**
  * Shows all user with their salary and payment option
@@ -91,20 +92,40 @@ class SallaryController extends Controller
     {
         if ($request->isMethod("POST")) {
             $user = User::where("id", "!=", Auth::user()->id)->where("stage", "=", "1")->get();
+            $total = $user->count();
+            $counter = 0;
             //  dd($user);
-            foreach ($user as $mem) {
-                $transection = transection::create([
-                    'user_id' => Auth::user()->id,
-                    'amount' => $mem->salary,
-                    'type' => 0,
-                ]);
-                $sallary = Salary::create([
-                    'user_ID' => $mem->id,
-                    'transection_ID' => $transection->id,
-                    'amount' => $transection->amount,
-                ]);
+            if ($user->count() == 0) {
+                return redirect()->back()->with(session()->flash('alert-warning', 'No user added to the Sytem'));
+            } else {
+                foreach ($user as $mem) {
+                    $sallary = Salary::where("user_ID", "=", $mem->id)->whereMonth("created_at", "=", now())->sum("amount");
+                    if ($sallary == $mem->salary) {
+                        $counter++;
+                    } else {
+                        if ($counter == $total) {
+                            break;
+                        } else {
+                            $transection = transection::create([
+                                'user_id' => Auth::user()->id,
+                                'amount' => $mem->salary - $sallary,
+                                'type' => 0,
+                            ]);
+                            $sallary = Salary::create([
+                                'user_ID' => $mem->id,
+                                'transection_ID' => $transection->id,
+                                'amount' => $transection->amount,
+                            ]);
+                        }
+                    }
+                }
             }
-            return redirect()->back()->with(session()->flash('alert-success', 'Salary record updated for All of the user '));
+
+            if ($counter != $total) {
+                return redirect()->back()->with(session()->flash('alert-success', 'Salary record updated for All of the user '));
+            } else {
+                return redirect()->back()->with(session()->flash('alert-warning', 'All member is already paid for this month'));
+            }
         } else {
             return redirect()->back();
         }
@@ -123,6 +144,50 @@ class SallaryController extends Controller
                 ->orderBy("salary.created_at", "desc")->get(["salary.*"]);
             //dd($sallary_Record);
             return view("user.salary", ["salary" => $sallary_Record]);
+        } else {
+            return redirect()->back();
+        }
+    }
+    /**
+     *UPDATE : indiviual salary record
+     *
+     * @param  \Illuminate\Http\Request $request @param App\Salary $id
+     *
+     * @return redirect with a flash message
+     */
+    public function updateSallaryRecord($id, Request $request)
+    {
+        if ($request != null) {
+
+            if ($request->salary_amount != '') {
+                $salary = Salary::find($id);
+                $transection = transection::where("id", "=", $salary->transection_ID)->update(["amount" => $request->salary_amount]);
+                $salary = $salary->update(["amount" => $request->salary_amount]);
+            }
+            return redirect()->back()->with(session()->flash('alert-success', 'Amount Updated'));
+        } else {
+            return redirect()->back();
+        }
+    }
+    /**
+     *DELETE Indivisual User salary record
+     *
+     * @param  \Illuminate\Http\Request  $request && @param App\Salary $transaction_id
+     *
+     * @return   redirect with a flash message
+     */
+    public function deleteSallaryRecord($id, Request $request)
+    {
+        if ($request->isMethod("POST")) {
+            $transection = transection::find($id);
+            if ($transection != null) {
+                $transection->delete();
+                return redirect()->back()->with(session()->flash('alert-success', 'Salary record deleted'));
+            } else {
+                return redirect()->back()->with(session()->flash('alert-danger', 'Something went wrong'));
+            }
+        } else {
+            return redirect()->back();
         }
     }
 }

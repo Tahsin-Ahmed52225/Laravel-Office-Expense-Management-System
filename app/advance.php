@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class advance extends Model
 {
-    protected $table = 'expense';
+    protected $table = 'advance';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id', 'transection_ID', 'amount', 'expense_details', 'remarks', 'type', 'date'
+        'user_ID', 'transection_ID', 'amount', 'type'
     ];
     public function transection()
     {

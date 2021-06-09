@@ -62,7 +62,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link <?php if(request()->route()->getName() == "admin.addmember" || request()->route()->getName() == "admin.viewMember") { echo "active";} ?>" href="{{ route("admin.addamount") }}" href="#navbar-member" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-sallery">
+              <a class="nav-link <?php if(request()->route()->getName() == "admin.addmember" || request()->route()->getName() == "admin.viewMember") { echo "active";} ?>"  href="#navbar-member" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-sallery">
                 <i class="fas fa-users text-warning"></i>
                 <span class="nav-link-text">Member</span>
               </a>
@@ -80,7 +80,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link <?php if(request()->route()->getName() == "admin.paysallary") { echo "active";} ?>" href="{{ route("admin.sallaryRecord") }}" href="#navbar-sallery" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-sallery">
+              <a class="nav-link <?php if(request()->route()->getName() == "admin.paysallary") { echo "active";} ?>" href="#navbar-sallery" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-sallery">
                 <i class="fas fa-hand-holding-usd text-info"></i>
                 <span class="nav-link-text">Sallary</span>
               </a>
@@ -91,6 +91,9 @@
                   </li>
                   <li class="nav-item">
                     <a href="{{ route("admin.sallaryRecord") }}" class="nav-link">Sallery Record</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route("admin.advance") }}" class="nav-link">Advance Record</a>
                   </li>
                 </ul>
               </div>
@@ -109,8 +112,16 @@
                   <li class="nav-item">
                     <a href="{{ route("admin.foodexpense") }}" class="nav-link">Food Expense</a>
                   </li>
+
+
                 </ul>
               </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php if(request()->route()->getName() == "admin.addamount") { echo "active";} ?>" href="{{ route("admin.addamount") }}">
+                  <i class="ni ni-money-coins text-primary"></i>
+                  <span class="nav-link-text">Add Amount</span>
+                </a>
             </li>
 
           </ul>
@@ -159,7 +170,14 @@
                           <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="media align-items-center">
                               <span class="avatar avatar-sm rounded-circle">
-                                <img alt="Image placeholder" src="../assets/img/theme/team-4.jpg">
+
+                                @if(Auth::user()->image_path == null)
+                                    <img src="{{ asset('../assets/img/theme/default.png') }}" class="rounded-circle">
+                                @else
+                                    <img   src="{{ (Auth::user()->image_path == null) ? asset('../assets/img/theme/default.png') : asset(Auth::user()->image_path) }}" >
+                                @endif
+
+
                               </span>
                               <div class="media-body ml-2 d-none d-lg-block">
                                 <span class="mb-0 text-sm  font-weight-bold">{{ Auth::user()->name }}</span>
@@ -200,6 +218,7 @@
 
   <!-- Argon Scripts -->
   <!-- Core -->
+  <script src="{{ asset("js/download.js") }}"></script>
   <script src="{{ asset("assets/vendor/jquery/dist/jquery.min.js") }}"></script>
   <script src="{{ asset("assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js") }}"></script>
   <script src="{{ asset("assets/vendor/js-cookie/js.cookie.js") }}"></script>

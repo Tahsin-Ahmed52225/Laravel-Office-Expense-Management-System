@@ -95,7 +95,7 @@
 <div class="container-fluid mt--6">
 <div class="row">
 <!-- Timeline notification start -->
-<div class="col-md">
+<div class="col-md" style=" height: 60vh; overflow: auto;">
   <div class="card">
     <!-- Card header -->
     <div class="card-header">
@@ -119,7 +119,7 @@
             <div class="timeline-content">
               <div class="d-flex justify-content-between pt-1">
                 <div>
-                  <span class="text-sm font-weight-bold<?php if($item->type == 1) echo " text-success"; else  echo " text-danger";?>">{{ $item->notification }}</span>
+                  <span class="text-sm font-weight-bold<?php if($item->type == 1 || $item->type == 3) echo " text-success"; else if($item->type == 2)echo " text-warning"; else  echo " text-danger";?>">{{ $item->notification }}</span>
                 </div>
                 <div class="text-right">
                   <small class="text-muted"><i class="fas fa-clock mr-1"></i>
@@ -142,7 +142,7 @@
                    </small>
                 </div>
               </div>
-              <h6 class="text-sm mt-1 mb-0">{{ $item->name}} had a expense of  &#2547;{{ $item->amount }}</h6>
+              <h6 class="text-sm mt-1 mb-0">{{ $item->name}}<?php if($item->expense_ID == NULL && $item->type == 1){echo " had added ";}else if($item->expense_ID == NULL && $item->type == 2){echo " had lend ";}else if($item->expense_ID == NULL && $item->type == 3){echo " had repaid advanced ";}else{ echo "had a expense of ";} ?>  &#2547;{{ $item->amount }} from office</h6>
             </div>
           </div>
         @endforeach

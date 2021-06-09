@@ -20,7 +20,7 @@
             </div>
 
             <div class="table-responsive py-4">
-              <table class="table table-flush" id="datatable-buttons">
+              <table class="table table-flush text-center" id="datatable-buttons">
                 <thead class="thead-light">
                   <tr>
                     <th width="20%">Name</th>
@@ -33,7 +33,7 @@
                   </tr>
                 </thead>
                 <tbody>
-
+               <?php $cout =1 ?>
                 @foreach($user as $value)
                 <?php $paid = 0;
                 $due = 0;
@@ -50,16 +50,19 @@
                             @endif
                         @endforeach
                         <?php $due = $value->salary - $paid;
-                              echo $due;
+                        if($due>0){
+                            echo $due;
+
+                        }else{
+                            echo "-";
+                        }
                         ?>
                     </td>
                     <td>
-                     @if($due == 0)
+                     @if($due == 0 )
                      <span class="text-success">Paid</span>
-                     @elseif($due == $value->salary)
+                     @elseif($due == $value->salary )
                      <span class="text-danger">Unpaid</span>
-                     @elseif($due <0)
-                     <span class="text-muted">Advanced</span>
                      @else
                      <span class="text-info">Partially Paid</span>
                      @endif
@@ -67,15 +70,31 @@
                     <form method="POST" action="{{ route("admin.paysallaryIn",$value->id) }}">
                     @csrf
                     <td>
-                      <input class="form-control" type="number" id="example-number-input" name="amount">
+                      <input class="form-control" type="number" id="example-number-input<?php echo $cout; ?>" name="amount" min=0>
+                      <script>
+
+                      function check(){
+                          var input = document.getElementById("example-number-input"+{!! $cout !!});
+                         if(input.value >  {!! $due !!}){
+                            $("#payin"+{!! $cout !!}). prop('disabled', true);
+                         }else{
+                            $("#payin"+{!! $cout !!}). prop('disabled', false);
+                         }
+
+
+                      }
+                      //document.getElementById("example-number-input"+{!! $cout !!}).addEventListener("change",check);
+                      document.getElementById("example-number-input"+{!! $cout !!}).addEventListener("keyup",check);
+                      </script>
                     </td>
                     <td>
-                      <button class="btn btn-icon btn-primary" type="submit">
+                      <button id="payin<?php echo $cout; ?>" class="btn btn-icon btn-primary" type="submit">
                         <span class="btn-inner--icon"><i class="ni ni-send"></i></span>
                       </button>
                     </td>
                     </form>
                   </tr>
+                  <?php $cout++; ?>
                 @endforeach
                 </tbody>
               </table>
@@ -86,7 +105,7 @@
     <div class="text-right pb-5">
   {{-- <form action="{{ route("admin.payallsallary") }}" method="POST"> --}}
      {{-- @csrf --}}
-        <button class="btn btn-icon btn-primary tdg_pay_btn" type="button" data-toggle="modal"  data-target="#paysallary">
+        <button class="btn btn-icon btn-primary tdg_pay_btn" type="button" data-toggle="modal"  data-target="#paysallary" >
             <span class="btn-inner--icon"><i class="fas fa-wallet"></i></span>
             <span class="btn-inner--text"  >PAY ALL</span>
         </button>

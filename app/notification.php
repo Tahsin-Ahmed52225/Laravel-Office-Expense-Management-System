@@ -15,4 +15,9 @@ class notification extends Model
     protected $fillable = [
         'user_ID', 'transection_ID', 'expense_ID', 'notification', 'type',
     ];
+
+    public function trasection()
+    {
+        return $this->belongsTo(transection::class);
+    }
 }

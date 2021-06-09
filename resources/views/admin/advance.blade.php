@@ -8,47 +8,42 @@
 @endforeach
     <!-- Table -->
     <div class="row">
-      <div class="col-lg-8 offset-lg-2" style=" height: 60vh; overflow: auto;">
+      <div class="col-lg-8 offset-lg-2">
 
         <div class="card">
           <!-- Card header -->
           <div class="card-header text-center">
-            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#food-expense-modal">ADD EXPENSE</button>
+            <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#food-expense-modal" onclick="lend()">LEND</button>
+            <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#food-expense-modal" onclick="receive()">RECEIVE</button>
           </div>
+          <script>
+            function lend(){
+                $("#advanceForm").attr("action", '{!! route("admin.advance") !!}' );
+            }
+            function receive(){
+                $("#advanceForm").attr("action", '{!! route("admin.receive") !!}' );
+            }
+        </script>
           <!-- Modal -->
             <div class="modal fade" id="food-expense-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Food Expense</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Lend Advance</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <form action="{{ route("admin.foodexpense") }}" method='POST'>
+                  <form id="advanceForm" action="{{ route("admin.advance") }}" method='POST'>
                     @csrf
                   <div class="modal-body">
-
-                      <div class="form-group">
-                        <label for="exampleFormControlTextarea1" class="form-control-label">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" Placeholder="Message" rows="2" name="expense_details" required></textarea>
-                      </div>
-
                       <div class="form-row">
-
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                           <div class="form-group">
-                            <label for="example-date-input" class="form-control-label">Date</label>
-                            <input class="form-control" type="date" name="date" id="example-date-input" required>
-                          </div>
-                        </div>
-
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="form-control-label">Remarks</label>
+                            <label for="exampleFormControlSelect1" class="form-control-label">Name</label>
                             <select class="form-control" id="exampleFormControlSelect1" name="remarks" required>
                                 @foreach($users as $item)
-                                <option value={{ $item->name }} >{{ $item->name }}</option>
+                                <option value={{ $item->id }} >{{ $item->name }}</option>
                                 @endforeach
                             </select>
 
@@ -77,7 +72,7 @@
         <div class="card">
           <!-- Card header -->
           <div class="card-header text-center">
-            <h2 class="mb-0">Food Expence</h2>
+            <h2 class="mb-0">Advance Record</h2>
           </div>
           <div class="table-responsive py-4">
             <table class="table table-flush" id="datatable-buttons">

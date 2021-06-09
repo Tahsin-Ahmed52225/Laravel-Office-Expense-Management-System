@@ -25,7 +25,7 @@ class transectionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return view  admin.addammount with ammount histroy
+     * @return view  add ammount with ammount histroy
      */
 
     public function addamount(Request $request)
@@ -33,7 +33,7 @@ class transectionController extends Controller
         if ($request->isMethod("GET")) {
             $Gain = Gain::where("user_id", "=", Auth::user()->id)
                 ->orderBy("created_at", "desc")
-                ->get(['created_at', 'amount', 'gain_details']);
+                ->get(['id', 'created_at', 'amount', 'gain_details', 'transection_id']);
             //dd($Gain);
             return view("admin.addamount", ['Gain' => $Gain]);
         } elseif ($request->isMethod("POST")) {
@@ -62,11 +62,54 @@ class transectionController extends Controller
         }
     }
     /**
+     *Update indiviusal gain record form transection Table and Gain table
+     *
+     * @param  \Illuminate\Http\Request  $request @param App\Gain $id
+     *
+     * @return view Addamount @return redirect with flash message
+     */
+
+    public function updategaininfo($id, Request $request)
+    {
+        if ($request->isMethod("POST")) {
+            if ($request != null) {
+                if ($request->gain_description != '') {
+                    $gain = Gain::where("id", "=", $id)->update(["gain_details" => $request->gain_description]);
+                }
+                if ($request->gain_amount != '') {
+                    $gain = Gain::find($id);
+                    $transection = transection::where("id", "=", $gain->transection_ID)->update(["amount" => $request->gain_amount]);
+                    $gain = $gain->update(["amount" => $request->gain_amount]);
+                }
+                return redirect()->back()->with(session()->flash('alert-success', 'Amount Upgraded'));
+            }
+        } else {
+            return redirect()->back()->with(session()->flash('alert-warning', 'Something Went Wrong'));
+        }
+    }
+    /**
+     *DELETE indiviusal gain record form transection Table and Gain table
+     *
+     * @param  \Illuminate\Http\Request  $Request && @param App\transection $id
+     *
+     * @return view Addamount || @return redirect with flash message
+     */
+    public function deletegaininfo($id, Request $request)
+    {
+        if ($request->isMethod("POST")) {
+            $transection = transection::find($id);
+            $transection->delete();
+            return redirect()->back()->with(session()->flash('alert-success', 'Amount record Deleted'));
+        } else {
+            return redirect()->back();
+        }
+    }
+    /**
      *GET: Shows (Admin) office expense && POST: Add office expence and add in the transection table & expense table
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return view office expense && redirect with flash message
+     * @return view office expense  ||  @return redirect with flash message
      */
     public function officeexpense(Request $request)
     {
@@ -116,7 +159,7 @@ class transectionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return view food expense && redirect with flash message
+     * @return view food expense || @return  redirect with flash message
      */
     public function foodexpense(Request $request)
     {
@@ -156,11 +199,60 @@ class transectionController extends Controller
         }
     }
     /**
+     *DELETE: Delete Admin Food expense
+     *
+     * @param  \Illuminate\Http\Request  $request @param $expense id
+     *
+     * @return redirect with flash message
+     */
+    public function deletefoodexpenseinfo(Request $request, $id)
+    {
+        if ($request->isMethod("POST")) {
+            $expense = Expense::find($id);
+            $transection = transection::find($expense->transection_ID);
+            $transection->delete();
+            return redirect()->back()->with(session()->flash('alert-success', 'Expense record Deleted'));
+        } else {
+            return redirect()->back()->with(session()->flash('alert-danger', 'Something went wrong'));
+        }
+    }
+    /**
+     *Update: Update Admin Food expense
+     *
+     * @param  \Illuminate\Http\Request  $request @param $expense id
+     *
+     * @return redirect with flash message
+     */
+    public function updatefoodexpenseinfo(Request $request, $id)
+    {
+        if ($request->isMethod("POST")) {
+            if ($request != null) {
+                if ($request->expense_details != '') {
+                    $expense = Expense::where("id", "=", $id)->update(["expense_details" => $request->expense_details]);
+                }
+                if ($request->date != '') {
+                    $expense = Expense::where("id", "=", $id)->update(["date" => $request->date]);
+                }
+                if ($request->remarks != '') {
+                    $expense = Expense::where("id", "=", $id)->update(["remarks" => $request->remarks]);
+                }
+                if ($request->amount != '') {
+                    $expense = Expense::find($id);
+                    $transection = transection::where("id", "=", $expense->transection_ID)->update(["amount" => $request->amount]);
+                    $expense = $expense->update(["amount" => $request->amount]);
+                }
+                return redirect()->back()->with(session()->flash('alert-success', 'Expense Upgraded'));
+            }
+        } else {
+            return redirect()->back()->with(session()->flash('alert-danger', 'Something went wrong'));
+        }
+    }
+    /**
      *GET: Shows (User) office expense && POST: Add office expence and add in the transection table & expense table
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return view office expense && redirect with flash message
+     * @return view office expense || @return redirect with flash message
      */
 
     public function userofficeexpense(Request $request)
@@ -185,7 +277,7 @@ class transectionController extends Controller
                 'amount' => $request->amount,
                 'expense_details' => $request->expense_details,
                 'type' => "office",
-                'remarks' => $request->remarks,
+                'remarks' => '-',
                 'date' => $request->date,
             ]);
             $notification = notification::create([
@@ -208,7 +300,7 @@ class transectionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return view food expense && redirect with flash message
+     * @return view food expense && @return redirect with flash message
      */
     public function userfoodexpense(Request $request)
     {
@@ -233,7 +325,7 @@ class transectionController extends Controller
                 'amount' => $request->amount,
                 'expense_details' => $request->expense_details,
                 'type' => "food",
-                'remarks' => $request->remarks,
+                'remarks' => '-',
                 'date' => $request->date,
             ]);
             $notification = notification::create([

@@ -10,7 +10,12 @@
                     <div class="col-lg-3 order-lg-2">
                         <div class="card-profile-image">
                             <a href="#">
-                                <img src="../assets/img/theme/team-4.jpg" class="rounded-circle">
+                                @if(Auth::user()->image_path == null)
+                                <img src="{{ asset('../assets/img/theme/default.png') }}" class="rounded-circle">
+                            @else
+                                <img style="height: 150px; width: 150px; object-fit: cover; border-radius:50%;" src="{{ (Auth::user()->image_path == null) ? asset('../assets/img/theme/default.png') : asset(Auth::user()->image_path) }}" >
+                            @endif
+
                             </a>
                         </div>
                     </div>
