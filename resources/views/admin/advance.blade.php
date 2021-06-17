@@ -114,31 +114,19 @@
                     </div>
 
                     <div class="modal-body">
-                    <form autocomplete="off"  action="{{ route("admin.updatefoodexpenseinfo" , $item->id) }}" method="POST"  >
+                    <form autocomplete="off"  action="{{ route("admin.updateAdvanceRecord" , $item->id) }}" method="POST"  >
                         @csrf
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label for="exampleFormControlTextarea1" class="form-control-label">Description</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1"  rows="2" name="expense_details" placeholder="{{ $item->expense_details }}" ></textarea>
-                                </div>
-
-                              </div>
 
                               <div class="form-row">
 
-                                <div class="col-md-6">
-                                  <div class="form-group">
-                                    <label for="example-date-input" class="form-control-label">Date</label>
-                                    <input class="form-control" type="date" name="date" id="example-date-input" >
-                                  </div>
-                                </div>
 
-                                <div class="col-md-6">
+
+                                <div class="col-md-12">
                                   <div class="form-group">
-                                    <label for="exampleFormControlSelect1" class="form-control-label">Remarks</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="remarks" >
+                                    <label for="exampleFormControlSelect1" class="form-control-label">Name</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="name" >
                                         @foreach($users as $items)
-                                        <option value={{ $items->name }} >{{ $items->name }}</option>
+                                        <option value={{ $items->id }} >{{ $items->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -155,7 +143,7 @@
 
 
                     <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" >Save changes</button>
+                       <button type="submit" class="btn btn-primary" >Save changes</button>
                     </div>
                 </form>
                 </div>
@@ -182,7 +170,7 @@
                                         </div>
                                         </div>
                                         <div class="modal-footer">
-                                        <form action="{{ route("admin.deletefoodexpenseinfo" , $item->id) }}" method="POST">
+                                        <form action="{{ route("admin.deleteAdvanceRecord" , $item->transection_ID) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-white"  id="DeleteButton" >Ok, Delete</button>
                                         </form>

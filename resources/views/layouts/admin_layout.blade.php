@@ -119,7 +119,7 @@
               </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php if(request()->route()->getName() == "admin.record") { echo "active";} ?>" href="{{ route("admin.record") }}">
+                <a class="nav-link <?php if(request()->route()->getName() == "admin.record") { echo "active";} ?>" href="{{ route("admin.record", "All") }}">
                   <i class="ni ni-collection text-primary"></i>
                   <span class="nav-link-text">Transaction Record</span>
                 </a>

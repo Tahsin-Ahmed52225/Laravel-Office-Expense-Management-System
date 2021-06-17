@@ -76,4 +76,37 @@ class advanceController extends Controller
             return redirect()->back()->with(session()->flash('alert-success', 'Advanced Repaid Successfully'));
         }
     }
+    public function deleteAdvanceRecord(Request $request, $id)
+    {
+        if ($request->isMethod("POST")) {
+            $transection = transection::find($id);
+            if ($transection != null) {
+                $transection->delete();
+                return redirect()->back()->with(session()->flash('alert-success', 'Advance record deleted'));
+            } else {
+                return redirect()->back()->with(session()->flash('alert-danger', 'Something went wrong'));
+            }
+        } else {
+            return redirect()->back();
+        }
+    }
+    public function updateAdvanceRecord(Request $request, $id)
+    {
+        if ($request != null) {
+
+            if ($request->name != '') {
+                $advance = advance::find($id);
+                $transection = transection::where("id", "=", $advance->transection_ID)->update(["user_ID" => $request->name]);
+                $advance = $advance->update(["user_ID" => $request->name]);
+            }
+            if ($request->amount != '') {
+                $advance = advance::find($id);
+                $transection = transection::where("id", "=", $advance->transection_ID)->update(["amount" => $request->amount]);
+                $advance = $advance->update(["amount" => $request->amount]);
+            }
+            return redirect()->back()->with(session()->flash('alert-success', 'Advance record Updated'));
+        } else {
+            return redirect()->back();
+        }
+    }
 }

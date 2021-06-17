@@ -21,6 +21,20 @@
                 <div class="row pt-4 ">
                     <div class="col-3 d-flex justify-content-end">
                         <div class="dropdown">
+                          <select id="category" class="form-control" onchange="TransactionCategory()">
+                            <option value="All" <?php if($type == "All"){ echo"selected";} ?> >All</option>
+                            <option value="All_Gain"<?php if($type == "All_Gain"){ echo"selected";} ?> >All Gain</option>
+                            <option value="All_Expense"<?php if($type == "All_Expense"){ echo"selected";} ?> >All Expense</option>
+                            <option value="Salary_Expense"<?php if($type == "Salary_Expense"){ echo"selected";} ?>>Salary Expense</option>
+                            <option value="Office_Expence"<?php if($type == "Office_Expence"){ echo"selected";} ?>>Office Expence</option>
+                            <option value="Food_Expence"<?php if($type == "Food_Expence"){ echo"selected";} ?>>Food Expence</option>
+                            <option value="Advance_Histroy"<?php if($type == "Advance_Histroy"){ echo"selected";} ?>>Advance Histroy</option>
+                          </select>
+
+                        </div>
+                    </div>
+                    <div class="col-3 d-flex justify-content-end">
+                        <div class="dropdown">
                           <select id="sort" class="form-control" onchange="sortform()">
                             <option value="monthly">Monthly</option>
                             <option value="yearly">Yearly</option>
@@ -28,8 +42,8 @@
 
                         </div>
                     </div>
-                    <div class="col-6">
-                        <form id="monthly" target="_blank" name="yearly2" method="POST" action="{{ route("admin.SalaryPDFrecordM") }}">
+                    <div class="col-4">
+                        <form id="monthly" target="_blank" name="yearly2" method="POST" action="#">
                         @csrf
                             <div class="row ">
                               <div class="col">
@@ -51,25 +65,40 @@
                               </div>
                               <div class="col">
                                 <select class="form-control" id="monthly_year" name="myear">
-                                    <option value='2024'>2024</option>
-                                    <option value='2023'>2023</option>
-                                    <option value='2022'>2022</option>
+
                                     <option value='2021'>2021</option>
+                                    <option value='2022'>2022</option>
+                                    <option value='2023'>2023</option>
+                                    <option value='2024'>2024</option>
+                                    <option value='2025'>2025</option>
+                                    <option value='2026'>2026</option>
+                                    <option value='2027'>2027</option>
+                                    <option value='2028'>2028</option>
+                                    <option value='2029'>2028</option>
+                                    <option value='2030'>2030</option>
+
+
                                 </select>
                               </div>
                             </div>
                           </form>
 
-                          <form id="yearly" target="_blank" name="yearly1" style="display: none;" method="POST" action="{{ route("admin.SalaryPDFrecord") }}">
+                          <form id="yearly" target="_blank" name="yearly1" style="display: none;" method="POST" action=#>
                           @csrf
                             <div class="row ">
 
                               <div class="col">
                                 <select id="yearly_year"class="form-control" name="year">
-                                    <option value="2024">2024</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2021">2021</option>
+                                    <option value='2021'>2021</option>
+                                    <option value='2022'>2022</option>
+                                    <option value='2023'>2023</option>
+                                    <option value='2024'>2024</option>
+                                    <option value='2025'>2025</option>
+                                    <option value='2026'>2026</option>
+                                    <option value='2027'>2027</option>
+                                    <option value='2028'>2028</option>
+                                    <option value='2029'>2028</option>
+                                    <option value='2030'>2030</option>
                                 </select>
                               </div>
                             </div>
@@ -77,15 +106,22 @@
 
                     </div>
                     <div class="col-2">
-                       <div class="">
+                       <div >
                           <i type="submit" onclick="download_pdf()"  class="fas fa-file-pdf fa-2x m-2"   title="Download PDF"></i>
-                          <i type="submit" class="fas fa-file-csv fa-2x m-2" onclick="download_csv()"title="Download CSV"></i>
+                          <span id = "csv_button">
+                            <i  id ="csv_button" type="submit" class="fas fa-file-csv fa-2x m-2"  onclick="download_csv()"title="Download CSV"></i>
+                          </span>
                        </div>
 
                     </div>
                 </div>
 
                 <script>
+                  function TransactionCategory(){
+                      var value = document.getElementById("category").value;
+                      var url = "/admin/transectionRecord/"+value;
+                      document.location.href=url;
+                  }
 
                   function sortform(){
                     var x = document.getElementById("sort").value;
@@ -98,27 +134,40 @@
                     }
                   }
                   function download_pdf(){
+                      var value = document.getElementById("category").value;
                       var x = document.getElementById("sort").value;
-                    if(x == "yearly"){
-                        $("#yearly").attr("action", '{!! route("admin.SalaryPDFrecord") !!}' );
+                    if(value == "All"){
+                        if(x == "yearly"){
+                        var url = "/admin/transaction/pdfdownload/yearly/"+value;
+                        $("#yearly").attr("action", url );
                         document.yearly1.submit();
                     }
                    else if(x == "monthly"){
-                    $("#monthly").attr("action", '{!! route("admin.SalaryPDFrecordM") !!}' );
+                     //   var url = "route('admin.TransactionPDFrecordM','"+value+"')";
+                        var url = "/admin/transaction/pdfdownload/monthly/"+value;
+                        $("#monthly").attr("action", url);
                         document.yearly2.submit();
+                    }
+
                     }
                   }
                   function download_csv(){
+                    var value = document.getElementById("category").value;
                     var x = document.getElementById("sort").value;
-                    if(x == "yearly"){
-                      //  var hello = document.getElementById("yearly").getAttribute("action");
-                        $("#yearly").attr("action", '{!! route("admin.SalaryCSVrecord") !!}' );
+                    if(value == "All"){
+                        if(x == "yearly"){
+                        var url = "/admin/transaction/csvdownload/yearly/"+value;
+                        $("#yearly").attr("action", url );
                         document.yearly1.submit();
                     }
                    else if(x == "monthly"){
-                        $("#monthly").attr("action", '{!! route("admin.SalaryCSVrecordM") !!}' );
+                        var url = "/admin/transaction/csvdownload/monthly/"+value;
+                        $("#monthly").attr("action", url);
                         document.yearly2.submit();
                     }
+
+                    }
+
                   }
                </script>
 

@@ -353,15 +353,47 @@ class transectionController extends Controller
      *
      * @return view food expense && @return redirect with flash message
      */
-    public function record(Request $request)
+    public function record(Request $request, $type)
     {
         if ($request->isMethod("GET")) {
-
-            $transaction_Record = transection::join("users", "users.id", "=", "user_ID")
-                ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
-            return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record]);
-        } else {
-            return redirect()->back();
+            if ($type == "All") {
+                $transaction_Record = transection::join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else if ($type == "All_Gain") {
+                $transaction_Record = transection::where("category", "=", "Gain")
+                    ->join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else if ($type == "All_Expense") {
+                $transaction_Record = transection::where("type", "=", 0)
+                    ->join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else if ($type == "Salary_Expense") {
+                $transaction_Record = transection::where("category", "=", "Salary Expense")
+                    ->join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else if ($type == "Office_Expence") {
+                $transaction_Record = transection::where("category", "=", "Office Expense")
+                    ->join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else if ($type == "Food_Expence") {
+                $transaction_Record = transection::where("category", "=", "Food Expense")
+                    ->join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else if ($type == "Advance_Histroy") {
+                $transaction_Record = transection::where("category", "=", "Advance out")
+                    ->orwhere("category", "=", "Advance in")
+                    ->join("users", "users.id", "=", "user_ID")
+                    ->orderBy("transection.created_at", "desc")->get(["users.*", "transection.*"]);
+                return view("admin.transactionRecord", ["transaction_Record" => $transaction_Record, "type" => $type]);
+            } else {
+                return redirect()->back();
+            }
         }
     }
 }
