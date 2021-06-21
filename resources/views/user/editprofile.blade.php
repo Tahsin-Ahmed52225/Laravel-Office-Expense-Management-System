@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="card-body">
-            <form autocomplete="off" action="{{ route("user.editprofile") }}" method="POST">
+            <form autocomplete="off" action="{{ route("user.editprofile") }}" method="POST" enctype="multipart/form-data">
             @csrf
               <h6 class="heading-small text-muted mb-4">User information</h6>
               <div class="">
@@ -80,6 +80,15 @@
 
                       </div>
 
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-email">Upload Profile Image</label>
+                            <input type="file"  id="input-file" name="profile_image" class="form-control" >
+                        </div>
+
+                      </div>
                   </div>
               </div>
               <div class="text-center">

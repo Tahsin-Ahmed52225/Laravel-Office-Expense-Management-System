@@ -4,7 +4,7 @@
 <div class="container-fluid mt--6">
     <!-- Table -->
     <div class="row">
-      <div class="col">
+      <div class="col" style="height: 80vh; overflow: auto;">
         <div class="card">
           <!-- Card header -->
           <div class="card-header">

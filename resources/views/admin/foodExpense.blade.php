@@ -123,7 +123,7 @@
                     </div>
 
                     <div class="modal-body">
-                    <form autocomplete="off"  action="{{ route("admin.updatefoodexpenseinfo" , $item->id) }}" method="POST"  >
+                    <form autocomplete="off"  action="{{ route("admin.updateexpenseinfo" , $item->id) }}" method="POST"  >
                         @csrf
                             <div class="form-group">
                                 <div class="col-md-12">
@@ -191,7 +191,7 @@
                                         </div>
                                         </div>
                                         <div class="modal-footer">
-                                        <form action="{{ route("admin.deletefoodexpenseinfo" , $item->id) }}" method="POST">
+                                        <form action="{{ route("admin.deleteexpenseinfo" , $item->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-white"  id="DeleteButton" >Ok, Delete</button>
                                         </form>

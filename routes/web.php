@@ -56,15 +56,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/deletegaininfo/{id}', 'transectionController@deletegaininfo')->name('deletegaininfo');
     #office expense routes
     Route::match(['get', 'post'], '/officeexpense', 'transectionController@officeexpense')->name('officeexpense');
-    Route::post('/updatefoodexpenseinfo/{id}', 'transectionController@updatefoodexpenseinfo')->name('updatefoodexpenseinfo');
-    Route::post('/deletefoodexpenseinfo/{id}', 'transectionController@deletefoodexpenseinfo')->name('deletefoodexpenseinfo');
     #Food expense routes
     Route::match(['get', 'post'], '/foodexpense', 'transectionController@foodexpense')->name('foodexpense');
+
     #Transaction Record Route
     Route::match(['get', 'post'], '/transectionRecord/{type}', 'transectionController@record')->name('record');
 
-
-
+    #Expense update and delete route
+    Route::post('/updateexpenseinfo/{id}', 'transectionController@updateexpenseinfo')->name('updateexpenseinfo');
+    Route::post('/deleteexpenseinfo/{id}', 'transectionController@deleteexpenseinfo')->name('deleteexpenseinfo');
 
     //Profile
     Route::get('/profile', 'AdminController@profile')->name('profile');
@@ -105,4 +105,8 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     //User profile
     Route::get('/profile', 'UserController@profile')->name('profile');
     Route::match(['get', 'post'], '/editprofile', 'UserController@editprofile')->name('editprofile');
+
+    #Expense update and delete route
+    Route::post('/updateexpenseinfo/{id}', 'transectionController@updateexpenseinfo')->name('updateexpenseinfo');
+    Route::post('/deleteexpenseinfo/{id}', 'transectionController@deleteexpenseinfo')->name('deleteexpenseinfo');
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
 use App\User;
@@ -11,6 +12,8 @@ use App\transection;
 use App\Expense;
 
 use App\notification;
+
+use App\advance;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -38,7 +41,10 @@ class UserController extends Controller
                 ->orderBy("notification.created_at", "desc")->get(["notification.*", "users.name", "transection.amount"]);
             // dd($notification);
             // return Carbon\Carbon::parse($date->created_at)->month;
-            return view("user.dashboard", ['amount' => $amount, 'user' => $user, 'expense' => $expense, 'notification' => $notification]);
+            $advance = advance::where("user_ID", "=", Auth::user()->id)->where("type", "=", 0)->sum("amount");
+            $advance1 = advance::where("user_ID", "=", Auth::user()->id)->where("type", "=", 1)->sum("amount");
+            $advance = $advance - $advance1;
+            return view("user.dashboard", ['amount' => $amount, 'user' => $user, 'expense' => $expense, 'notification' => $notification, 'advance' => $advance]);
         } else {
             return "echo 'Ongoing'";
         }
@@ -89,6 +95,19 @@ class UserController extends Controller
                 }
                 if ($request->number != '') {
                     $user = User::where("id", "=", $id)->update(["number" => $request->number]);
+                }
+                if ($request->hasFile('profile_image')) {
+                    $image = $request->file('profile_image');
+                    $name = time() . '.' . $image->getClientOriginalExtension();
+                    $path = '/images/';
+                    $destinationPath = public_path('images');
+                    $image->move($destinationPath, $name);
+
+                    $user_image = '';
+                    if (isset($name)) {
+                        $user_image = $path . $name;
+                    }
+                    User::where('id', '=', Auth::user()->id)->update(["image_path" => $user_image]);
                 }
                 return redirect()->back()->with(session()->flash('alert-success', 'Profile Updated'));
             }

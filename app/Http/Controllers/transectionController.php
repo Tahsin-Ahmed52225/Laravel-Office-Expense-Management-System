@@ -210,7 +210,7 @@ class transectionController extends Controller
      *
      * @return redirect with flash message
      */
-    public function deletefoodexpenseinfo(Request $request, $id)
+    public function deleteexpenseinfo(Request $request, $id)
     {
         if ($request->isMethod("POST")) {
             $expense = Expense::find($id);
@@ -228,7 +228,7 @@ class transectionController extends Controller
      *
      * @return redirect with flash message
      */
-    public function updatefoodexpenseinfo(Request $request, $id)
+    public function updateexpenseinfo(Request $request, $id)
     {
         if ($request->isMethod("POST")) {
             if ($request != null) {

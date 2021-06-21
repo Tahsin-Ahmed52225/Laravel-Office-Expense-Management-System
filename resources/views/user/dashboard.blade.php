@@ -13,7 +13,7 @@
     </div>
 </div> --}}
 <div class="row">
-    <div class="col-xl-6 col-md-6">
+    <div class="col-xl-4 col-md-4">
 
       <div class="card card-stats<?php if($amount<=0) {echo ' bg-danger ';}?>">
         <!-- Card body -->
@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-6 col-md-6">
+    <div class="col-xl-4 col-md-4">
       <div class="card card-stats">
         <!-- Card body -->
         <div class="card-body p-5">
@@ -50,6 +50,24 @@
         </div>
       </div>
     </div>
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stats">
+          <!-- Card body -->
+          <div class="card-body p-5">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Advance Amount</h5>
+                <span class="h2 font-weight-bold mb-0"> &#2547;{{  $advance }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                  <i class="ni ni-collection"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
 </div>
@@ -59,7 +77,7 @@
 <div class="container-fluid mt--6">
 <div class="row">
 <!-- Timeline notification start -->
-<div class="col-md">
+<div class="col-md" style=" height: 60vh; overflow: auto;">
   <div class="card">
     <!-- Card header -->
     <div class="card-header">
